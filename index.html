@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Micro Decision Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-6">
+  <div class="w-full max-w-lg bg-white p-6 rounded shadow space-y-6">
+    <h1 class="text-xl font-semibold text-center">Micro Decision Tracker</h1>
+
+    <div id="choices" class="space-y-4">
+      <div class="flex justify-between items-center">
+        <span class="font-medium">Coffee or Tea?</span>
+        <div class="space-x-2">
+          <button onclick="logDecision('Coffee')" class="px-4 py-2 border rounded hover:bg-gray-100">Coffee</button>
+          <button onclick="logDecision('Tea')" class="px-4 py-2 border rounded hover:bg-gray-100">Tea</button>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center">
+        <span class="font-medium">Work or Break?</span>
+        <div class="space-x-2">
+          <button onclick="logDecision('Work')" class="px-4 py-2 border rounded hover:bg-gray-100">Work</button>
+          <button onclick="logDecision('Break')" class="px-4 py-2 border rounded hover:bg-gray-100">Break</button>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center">
+        <span class="font-medium">Social or Solo?</span>
+        <div class="space-x-2">
+          <button onclick="logDecision('Social')" class="px-4 py-2 border rounded hover:bg-gray-100">Social</button>
+          <button onclick="logDecision('Solo')" class="px-4 py-2 border rounded hover:bg-gray-100">Solo</button>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="text-lg font-semibold mt-6">Last 5 Decisions</h2>
+      <ul id="log" class="mt-2 space-y-1 text-sm text-gray-700"></ul>
+    </div>
+  </div>
+
+  <script>
+    function logDecision(choice) {
+      const log = JSON.parse(localStorage.getItem("decisionLog") || "[]");
+      log.unshift({ choice, time: new Date().toLocaleString() });
+      localStorage.setItem("decisionLog", JSON.stringify(log.slice(0, 5)));
+      renderLog();
+    }
+
+    function renderLog() {
+      const log = JSON.parse(localStorage.getItem("decisionLog") || "[]");
+      const logList = document.getElementById("log");
+      logList.innerHTML = log.map(item => `<li>${item.time} — ${item.choice}</li>`).join('');
+    }
+
+    renderLog();
+  </script>
+</body>
+</html>
